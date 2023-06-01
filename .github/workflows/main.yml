@@ -17,10 +17,14 @@ jobs:
       - name: Create file
         run: echo "${{ steps.LHCIAction.outputs.manifest }}" > something.html
 
-      - name: Commit and push changes
+      - name: Add all the plugin files
         run: |
-          git config --local user.email "dufresnesteven@github.com"
-          git config --local user.name "StevenDufresne"
-          git add something.html
-          git commit -m "Add something.html"
-          git push origin HEAD:stats-branch
+            git add *
+
+      - name: Commit and push
+        uses: actions-js/push@a52398fac807b0c1e5f1492c969b477c8560a0ba # 1.3
+        with:
+            github_token: ${{ secrets.GITHUB_TOKEN }}
+            branch: build
+            force: true
+            message: 'Build: ${{ github.sha }}'
