@@ -22,6 +22,7 @@ jobs:
             git add *
 
       - name: Commit & Push changes
-        uses: actions-js/push@stats-branch
+        uses: actions-js/push@master
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
+          branch: stats-branch
