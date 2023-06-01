@@ -19,15 +19,15 @@ jobs:
             https://wordpress.org/mobile/
           uploadArtifacts: true # save results as an action artifact
           configPath: ./lighthouserc.json
-      - name: Print 
-        run: |
-          data='${{ steps.LHCIAction.outputs.manifest }}'
-          echo "$data" | jq -r '.[] | "\(.url) \(.summary.performance) \(.summary.accessibility) \(.summary."best-practices") \(.summary.seo) \(.summary.pwa)"' | while read -r url performance accessibility best_practices seo pwa; do
-            # Display URL
-            echo "URL: $url"
+      
+      - name: Create branch
+        run: git checkout stats-branch
 
-            # Display markdown table
-            echo "| Performance | Accessibility | Best Practices | SEO | PWA |
-          |-------------|---------------|----------------|-----|-----|
-          | $performance | $accessibility | $best_practices | $seo | $pwa |"
-          done
+      - name: Create file
+        run: echo "${{ steps.LHCIAction.outputs.manifest }}" > something.html
+
+      - name: Commit and push changes
+        run: |
+          git add something.html
+          git commit -m "Add something.html"
+          git push origin  stats-branch
