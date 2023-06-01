@@ -11,12 +11,6 @@ jobs:
         with:
           urls: |
             https://wordpress.org
-            https://wordpress.org/patterns/
-            https://wordpress.org/themes/
-            https://wordpress.org/plugins/
-            https://wordpress.org/news/
-            https://wordpress.org/download/
-            https://wordpress.org/mobile/
           uploadArtifacts: true # save results as an action artifact
           configPath: ./lighthouserc.json
       
