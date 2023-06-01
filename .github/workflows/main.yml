@@ -21,10 +21,7 @@ jobs:
         run: |
             git add *
 
-      - name: Commit and push
-        uses: actions-js/push@a52398fac807b0c1e5f1492c969b477c8560a0ba # 1.3
+      - name: Commit & Push changes
+        uses: actions-js/push@stats-branch
         with:
-            github_token: ${{ secrets.ACCESS_TOKEN }}
-            branch: build
-            force: true
-            message: 'Build: ${{ github.sha }}'
+          github_token: ${{ secrets.GITHUB_TOKEN }}
