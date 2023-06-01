@@ -13,15 +13,14 @@ jobs:
             https://wordpress.org
           uploadArtifacts: true # save results as an action artifact
           configPath: ./lighthouserc.json
-      
-      - name: Create branch
-        run: git checkout stats-branch
 
       - name: Create file
         run: echo "${{ steps.LHCIAction.outputs.manifest }}" > something.html
 
       - name: Commit and push changes
         run: |
+          git config --local user.email "dufresnesteven@github.com"
+          git config --local user.name "StevenDufresne"
           git add something.html
           git commit -m "Add something.html"
-          git push origin  stats-branch
+          git push origin HEAD:stats-branch
