@@ -1,0 +1,33 @@
+name: Lighthouse CI
+on: repository_dispatch
+jobs:
+  lighthouse:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - name: Audit URLs using Lighthouse
+        id: LHCIAction
+        uses: treosh/lighthouse-ci-action@v10
+        with:
+          urls: |
+            https://wordpress.org
+            https://wordpress.org/patterns/
+            https://wordpress.org/themes/
+            https://wordpress.org/plugins/
+            https://wordpress.org/news/
+            https://wordpress.org/download/
+            https://wordpress.org/mobile/
+          uploadArtifacts: true # save results as an action artifact
+          configPath: ./lighthouserc.json
+      - name: Print 
+        run: |
+          data='${{ steps.LHCIAction.outputs.manifest }}'
+          echo "$data" | jq -r '.[] | "\(.url) \(.summary.performance) \(.summary.accessibility) \(.summary."best-practices") \(.summary.seo) \(.summary.pwa)"' | while read -r url performance accessibility best_practices seo pwa; do
+            # Display URL
+            echo "URL: $url"
+
+            # Display markdown table
+            echo "| Performance | Accessibility | Best Practices | SEO | PWA |
+          |-------------|---------------|----------------|-----|-----|
+          | $performance | $accessibility | $best_practices | $seo | $pwa |"
+          done
